@@ -1,41 +1,67 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import * as React from "react";
+import { NavLink } from "react-router-dom";
+import {
+  Box,
+  createTheme,
+  ThemeProvider,
+  Grid,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContentText,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
+
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      mobile: 0,
+      tablet: 640,
+      laptop: 1024,
+      desktop: 1280,
+    },
+  },
+});
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: {
+    mobile: 190,
+    tablet: 480,
+    laptop: 480,
+    desktop: 480,
+  },
+  height: {
+    mobile: 80,
+    tablet: 80,
+    laptop: 90,
+    desktop: 90,
+  },
+  bgcolor: "background.paper",
   p: 4,
+  zIndex: 1000,
 };
 
-export default function modalConfirmation({mensage, setModalOpen}) {
-  const [open, setOpen] = React.UseState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  setOpen(setModalOpen);
-
+export default function ModalConfirmation({ isOpen, onClose }) {
+  console.log("abriuuuu");
   return (
-    <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {mensage}
-          </Typography>
-        </Box>
-      </Modal>
-    </div>
+    isOpen && (
+      <ThemeProvider theme={theme}>
+        <Dialog 
+        open={true}>
+          <NavLink to={'/'}>x</NavLink>
+          <DialogContent>
+            <DialogContentText>
+            Usuário cadrastado com sucesso!
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
+      </ThemeProvider>
+    )
   );
 }
