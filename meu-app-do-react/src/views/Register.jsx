@@ -18,7 +18,7 @@ import { FormControl,
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
- 
+import ModalConfirmation from "../components/modalConfirmation";
 
 const Main= styled.main`
    background-color: #F7F7F7;
@@ -42,9 +42,11 @@ const Register = () => {
     const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const [openModal, setOpenModal] = React.useState(false);
 
     return (
         <Main>
+            <ModalConfirmation isOpen={openModal} onClose={() =>setOpenModal(false) }/>
             <Grid
                 display="flex"
                 justifyContent="center"
@@ -215,7 +217,9 @@ const Register = () => {
                                 laptop: 2,
                                 desktop:2
                             }
-                        }}>ENVIAR</Button>
+                        }}
+                        onClick={() => { setOpenModal(!openModal)}}
+                        >ENVIAR</Button>
 
                     </Box>
                 </ThemeProvider>
