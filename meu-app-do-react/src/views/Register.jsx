@@ -18,7 +18,7 @@ import { FormControl,
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import ModalConfirmation from "../components/modalConfirmation";
+import ModalConfirmation from "../components/ModalConfirmation";
 
 const Main= styled.main`
    background-color: #F7F7F7;
