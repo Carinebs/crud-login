@@ -7,12 +7,11 @@ import {
   Grid,
   Typography,
   Dialog,
-  DialogTitle,
   DialogContentText,
-  DialogContent,
-  DialogActions,
-  Button,
+  DialogContent
 } from "@mui/material";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CloseIcon from '@mui/icons-material/Close';
 
 const theme = createTheme({
   breakpoints: {
@@ -48,16 +47,24 @@ const style = {
 };
 
 export default function ModalConfirmation({ isOpen, onClose }) {
-  console.log("abriuuuu");
   return (
     isOpen && (
       <ThemeProvider theme={theme}>
-        <Dialog 
-        open={true}>
-          <NavLink to={'/'}>x</NavLink>
+        <Dialog open={true}>
+          <NavLink to={"/"}><CloseIcon sx={{color: '#2196F3',fontSize: 22, marginTop: 1, marginLeft: 1 }}/></NavLink>
           <DialogContent>
             <DialogContentText>
-            Usuário cadrastado com sucesso!
+              <Grid sx={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+                flexDirection:"row",
+                gap:1,
+                marginBottom: 1
+              }}>
+                <CheckCircleOutlineIcon sx={{color:'#2E7D32',fontSize:25 }} />
+                <Typography sx={{color:'#000000',fontSize: 19}}> Usuário cadrastado com sucesso!</Typography>
+              </Grid>
             </DialogContentText>
           </DialogContent>
         </Dialog>
