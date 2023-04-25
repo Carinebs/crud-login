@@ -1,7 +1,6 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 import {
-  Box,
   createTheme,
   ThemeProvider,
   Grid,
@@ -23,28 +22,6 @@ const theme = createTheme({
     },
   },
 });
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: {
-    mobile: 190,
-    tablet: 480,
-    laptop: 480,
-    desktop: 480,
-  },
-  height: {
-    mobile: 80,
-    tablet: 80,
-    laptop: 90,
-    desktop: 90,
-  },
-  bgcolor: "background.paper",
-  p: 4,
-  zIndex: 1000,
-};
 
 export default function ModalConfirmation({ isOpen, onClose }) {
   return (
