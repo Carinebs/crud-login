@@ -26,22 +26,20 @@ const getUsers =  async (): Promise<IUser[]> => {
 const updateUser = async (id: number, name: string, email: string, password: string) => {
     try {
       const user = await userRepository.findOne({
-        select: ['id'],
-        where: {
-          id,
-        },
+        where:
+      { id: id}
       });
       
       if (!user) {
         throw new Error('Usuário não encontrado');
       }
+      
       user.name = name;
       user.email = email;
       user.password = password;
       await userRepository.save(user);
       return user;
     } catch (error) {
-      console.error(error);
       throw new Error('Erro ao atualizar usuário');
     }
   }
