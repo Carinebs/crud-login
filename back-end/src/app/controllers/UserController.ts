@@ -7,15 +7,17 @@ const userRouter = Router();
 
 
 
-userRouter.post('/login', async (req: Request, res: Response): Promise<Response> => {
+userRouter.post('/login', async (req: Request, res: Response) => {
     try {
-      const { name, password } = req.body; 
-      const user = await userRepository.loginUser(name, password); 
-      const token = jsonwebtoken.sign(user, "T@mNzK1$csd3d");
+      const { email, password } = req.body; 
+      console.log(req.body)
+      const user = await userRepository.loginUser(email, password);
+      const token =  jsonwebtoken.sign({user: user.name, password: user.password}, "T@mNzK1$csd3d");
       res.cookie('token',token)
-      return res.status(201).json(user);  
+      return res.status(201).json('loag'); 
     } catch (error) {
-        return res.status(500).json({ error: 'Erro ao autenticar usuário'}); 
+      const message = (error as Error).message; 
+      return res.status(404).json({ message }); 
     }
 });
 
@@ -34,34 +36,15 @@ userRouter.post('/loged', async (req: Request, res: Response): Promise<Response>
       }
 
     } catch (error) {
-        return res.status(500).json({ error: 'Erro ao autenticar usuário'}); 
+      const message = (error as Error).message; 
+      return res.status(404).json({ message });  
     }
 });
 
-
-userRouter.post('/login', async (req: Request, res: Response): Promise<Response> => {
-    try {
-      const auth = req.cookies.token || null; 
-
-      if(!auth){
-        return res.status(401).json('Não Autorizado');
-      }
-      try{
-        const token = await jsonwebtoken.verify(auth, "T@mNzK1$csd3d" );
-        return res.status(200).json('Usuário autenticado');
-      }catch(err){
-        return res.status(401).json('Não Autorizado');
-      }
-
-    } catch (error) {
-        return res.status(500).json({ error: 'Erro ao autenticar usuário'}); 
-    }
-});
 
 userRouter.post('/logOff', async (req: Request, res: Response)=> {
         res.clearCookie('token'); 
         res.redirect('/')
-        return res.status(200).json('Usuário deslogado');
 });
 
 
@@ -70,9 +53,10 @@ userRouter.post('/registration', async (req: Request, res: Response): Promise<Re
     try {
         const { name, email, password } = req.body; 
         const user = await userRepository.postUser(name, email, password); 
-        return res.status(200).json(user); 
+        return res.status(200).json('Usuário cadastrado'); 
     } catch (error) {
-        return res.status(500).json({ error: 'Erro ao criar usuário'}); 
+      const message = (error as Error).message; 
+      return res.status(404).json({ message }); 
     }
 });
 
@@ -87,7 +71,8 @@ userRouter.put('/user', async (req: Request, res: Response): Promise<Response> =
         const user = await userRepository.updateUser(id, name, email, password); 
         return res.status(201).json("Usuário atualizado"); 
       } catch (error) {
-          return res.status(500).json({ error: 'Erro ao atualizar usuário'}); 
+        const message = (error as Error).message; 
+        return res.status(404).json({ message }); 
       }
 });
 
@@ -97,7 +82,8 @@ userRouter.delete('/user', async (req: Request, res: Response): Promise<Response
         const user = await userRepository.deleteUser(id); 
         return res.status(201).json('Usuário deletado'); 
       } catch (error) {
-          return res.status(500).json({ error: 'Erro ao deletar usuário'}); 
+        const message = (error as Error).message; 
+        return res.status(404).json({ message }); 
       }
 });
 
