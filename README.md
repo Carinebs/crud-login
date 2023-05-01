@@ -27,7 +27,7 @@ $ npm install
 # Inicie o servidor
 $ npm run dev:server
 
-# O servidor iniciará na porta:3000 - acesse http://localhost:3333 
+# O servidor iniciará na porta:3333 - acesse http://localhost:3333 
 
 # Volte para a pasta raiz
 $ cd ..
@@ -41,4 +41,4 @@ $ npm install
 # Inicie a aplicação
 $ npm start
 
-# A aplicação iniciará na porta:3001 - acesse http://localhost:3001
+# A aplicação iniciará na porta:3000 - acesse http://localhost:3000
