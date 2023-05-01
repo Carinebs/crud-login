@@ -10,19 +10,18 @@ const loginUser = async (email: string, password: string) => {
     if (!email || !password) {
       throw new Error('Dados insuficientes.');
     }
-
+    
     const user = await userRepository.findOne({
       where:
-    { email: email, 
-      password: password}
+    { email: email}
     });
 
     if (!user){
       throw new Error('E-mail ou senha incorretos');
     }
-    
+
     const isMatch = await bcrypt.compare(password, user.password)
-    
+  
     if(isMatch){
       return user
     }else{

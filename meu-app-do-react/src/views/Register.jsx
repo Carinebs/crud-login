@@ -1,13 +1,14 @@
 import * as React from "react";
+import axios from "axios";
+import { useForm } from "react-hook-form";
 import { NavLink } from "react-router-dom";
-import styled from "styled-components";
 import { FormControl, 
         Box, 
         createTheme, 
         ThemeProvider, 
         Grid, 
         TextField, 
-        OutlinedInput,
+        OutlinedInput, 
         IconButton, 
         InputLabel, 
         InputAdornment,
@@ -20,9 +21,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ModalConfirmation from "../components/ModalConfirmation";
 
-const Main= styled.main`
-   background-color: #F7F7F7;
-`;
 
 const theme = createTheme({
   breakpoints: {
@@ -34,18 +32,43 @@ const theme = createTheme({
     },
   },
 });
-
+const baseURL = "http://localhost:3333/users/";
 const Register = () => {
 
     const [showPassword, setShowPassword] = React.useState(false);
+    const [isRegistered, setIsRegistered] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   const [openModal, setOpenModal] = React.useState(false);
 
+  const {
+    register,
+    handleSubmit
+  } = useForm();
+
+  const createUser = (data) => {
+    axios
+      .post(`${baseURL}/registration`, data)
+      .then((response) => {
+        if (response.status === 200) {
+            setOpenModal(!openModal)
+            return true; 
+          } else {
+            return false;
+          }
+      }).catch(error => {
+        console.log(error.message); 
+      });
+  };
+
+  const onSubmit = (data) => {
+    createUser(data);
+    
+}
     return (
-        <Main>
+        <form onSubmit={handleSubmit(onSubmit)}  style={{backgroundColor : '#F7F7F7'}}>
             <ModalConfirmation isOpen={openModal} onClose={() =>setOpenModal(false) }/>
             <Grid
                 display="flex"
@@ -105,8 +128,10 @@ const Register = () => {
                                 desktop:2
                             }
                         }}>Cadastre-se</Typography>
-                        <form></form>
                         <TextField
+                            {...register("name", {
+                                required: true
+                              })}
                             required
                             id="outlined-required"
                             label="Nome"
@@ -133,6 +158,7 @@ const Register = () => {
                         />
                         <TextField
                             required
+                            {...register('email')}
                             id="outlined-required"
                             label="E-mail"
                             sx={{
@@ -166,6 +192,8 @@ const Register = () => {
                          }} variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                             <OutlinedInput
+                                 required
+                                 {...register('password')}
                                 id="outlined-adornment-password"
                                 type={showPassword ? 'text' : 'password'}
                                 endAdornment={
@@ -198,6 +226,7 @@ const Register = () => {
                             />
                         </FormControl>
                         <Button variant="contained"
+                        type='submit'
                         sx={{
                             width: {
                             mobile: 298,
@@ -218,13 +247,13 @@ const Register = () => {
                                 desktop:2
                             }
                         }}
-                        onClick={() => { setOpenModal(!openModal)}}
+                        // onClick={() => { setOpenModal(!openModal)}}
                         >ENVIAR</Button>
 
                     </Box>
                 </ThemeProvider>
             </Grid>
-        </Main>
+        </form>
       );
 }
 

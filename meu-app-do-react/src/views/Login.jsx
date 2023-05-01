@@ -1,4 +1,6 @@
 import * as React from "react";
+import axios from "axios";
+import { useForm } from "react-hook-form";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FormControl, 
@@ -20,10 +22,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
  
 
-const Main= styled.main`
-   background-color: #F7F7F7;
-`;
-
 const theme = createTheme({
   breakpoints: {
     values: {
@@ -35,6 +33,7 @@ const theme = createTheme({
   },
 });
 
+const baseURL = "http://localhost:3333/users";
 const Login = () => {
 
     const [showPassword, setShowPassword] = React.useState(false);
@@ -52,9 +51,29 @@ const Login = () => {
     const [isRegistered, setIsRegistered] = React.useState(false);
     const [logged, setLogged] = React.useState(false);
 
-    // React.useEffect(() => {
-    //   userRef.current.focus();
-    // }, []);
+    const isLogin = (data) => {
+        axios
+          .post(`${baseURL}/login`, data)
+          .then((response) => {
+            axios.interceptors.request.use((config) => {
+                const token = localStorage.getItem('token');
+                if (token) {
+                  config.headers.Authorization = `Bearer ${token}`;
+                }
+                return config;
+              });
+            setIsRegistered(true);
+          });
+      };
+
+    const onSubmit = (data) => {
+        isLogin(data)
+    }
+    
+    const {
+        register,
+        handleSubmit
+      } = useForm();
 
     React.useEffect(() => {
         serErrMsg('');
@@ -84,7 +103,7 @@ const Login = () => {
     
 
   return (
-    <Main>
+    <form onSubmit={handleSubmit(onSubmit)} style={{backgroundColor : '#F7F7F7'}}>
         <Grid
             display="flex"
             justifyContent="center"
@@ -139,6 +158,9 @@ const Login = () => {
                         }
                     }}>Login</Typography>
                     <TextField
+                      {...register("email", {
+                        required: true
+                      })}
                         required
                         id="outlined-required"
                         label="E-mail"
@@ -173,6 +195,9 @@ const Login = () => {
                      }} variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                         <OutlinedInput
+                          {...register("password", {
+                            required: true
+                          })}
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
                             endAdornment={
@@ -205,6 +230,7 @@ const Login = () => {
                         />
                     </FormControl>
                     <Button variant="contained"
+                    type='submit'
                     sx={{
                         width: {
                         mobile: 298,
@@ -234,7 +260,7 @@ const Login = () => {
                 </Box>
             </ThemeProvider>
         </Grid>
-    </Main>
+    </form>
   );
 };
 
